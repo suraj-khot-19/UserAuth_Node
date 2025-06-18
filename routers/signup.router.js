@@ -8,20 +8,30 @@ router.post('/signup', async (req, res) => {
     try {
         const { name, email, age, password } = req.body;
 
+        if (password == null || email == null || name == null || age == null) {
+            return res.status(400).json({
+                msg: "All feilds are required!"
+            });
+        }
+
+        //check valid email
+        const emailRgx = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        if (!emailRgx.test(email)) {
+            return res.status(400).json({ msg: "Please enter valid email id!" });
+        }
+
         const existUserEmail = await User.findOne({ email });
 
         if (existUserEmail) {
-            res.status(400).json({
+            return res.status(400).json({
                 msg: "User with this email is already exists!"
             });
-            return;
         }
 
         if (password.length < 6) {
-            res.status(400).json({
+            return res.status(400).json({
                 msg: "Password must be of 6 character!"
             });
-            return;
         }
 
         const salt = await bcrypt.genSalt(10)

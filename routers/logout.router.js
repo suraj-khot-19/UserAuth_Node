@@ -5,7 +5,7 @@ const router = express.Router();
 router.get('/logout', async (req, res) => {
     try {
         //clearing cookie only
-        res.clearCookie('jwt-code', {
+        res.clearCookie('jwt', {
             httpOnly: true,
             sameSite: 'Strict',
         })

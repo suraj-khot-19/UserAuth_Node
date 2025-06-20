@@ -1,10 +1,13 @@
 import jwt from "jsonwebtoken"
 import User from "../model/user.js"
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 const userMiddleware = async (req, res, next) => {
     try {
         //get token from request
-        const token = req.cookies.jwt-code;
+        const token = req.cookies.jwt;
 
         //if no token
         if (!token) {
@@ -12,14 +15,14 @@ const userMiddleware = async (req, res, next) => {
         }
 
         //verify
-        const verify = jwt.verify(token, process.env.JWT_SECURE_CODE)
+        const verify = jwt.verify(token, process.env.JWT_CODE)
 
         if (!verify) {
             return res.status(401).json({ msg: "invalid token" })
         }
 
         //if verifyed
-        const user = await User.findById(verify.userId).select('-password'); //select user but not password
+        const user = await User.findById(verify.userID).select('-password'); //select user but not password
 
         if (!user) {
             return res.status(401).json({ msg: "user not found" })

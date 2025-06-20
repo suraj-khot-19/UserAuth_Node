@@ -1,6 +1,7 @@
 import express from 'express'
 import User from '../model/user.js'
 import bcrypt from 'bcrypt'
+import generateToken from '../config/generateToken.js'
 
 const router = express.Router()
 
@@ -15,7 +16,7 @@ router.post("/login", async (req, res) => {
         }
 
         // const user = await User.findOne({ email }).select('-password')   ///This wont work cause we need password below to check
-        
+
         const user = await User.findOne({ email })
 
         if (user == null) {
@@ -36,6 +37,9 @@ router.post("/login", async (req, res) => {
         const userObj = user.toObject();
         delete userObj.password;
 
+        //generating token 
+        generateToken(user._id, res)
+        
         res.status(200).json({
             msg: "Logged in successfully!",
             user: userObj

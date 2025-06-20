@@ -16,3 +16,9 @@ const generateToken = (userID, res) => {
 }
 
 export default generateToken;
+
+
+/*
+example ==>
+jwt-code=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2ODU1OGM4ZGMzNjVkODI4YzRmNmY4YjEiLCJpYXQiOjE3NTA0Mzg3NjMsImV4cCI6MTc1MTMwMjc2M30.XJj-KQj8kMGAGyfEQYTePJsRyTxmqfhkV-dO2C95chs; Path=/; HttpOnly; Expires=Mon, 30 Jun 2025 16:59:23 GMT;
+*/

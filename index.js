@@ -2,7 +2,7 @@ import express from 'express'
 import ConnectToMongo from './db/db.js'
 import signup from './routers/signup.router.js'
 import login from './routers/login.router.js'
-
+import logout from './routers/logout.router.js'
 
 ///dev
 import dotenv from 'dotenv';
@@ -22,3 +22,4 @@ app.listen(port, () => {
 
 app.use('/api/user', signup)
 app.use('/api/user', login)
+app.use('/api/user', logout)

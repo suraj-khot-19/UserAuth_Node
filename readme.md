@@ -47,10 +47,11 @@ JWT_CODE=SECURE_CODE
 <b>Output Screen's</b>
 <table>
   <tr>
-    <td><img src="" alt="vid"></td>
-    <td><img src="" alt="vid"></td>
-    <td><img src="" alt="vid"></td>
-    <td><img src="" alt="vid"></td>
+    <td><img src="https://github.com/suraj-khot-19/UserAuth_Node/blob/main/output/1.png" alt="vid"></td>
+    </tr>
+    <td><img src="https://github.com/suraj-khot-19/UserAuth_Node/blob/main/output/2.png" alt="vid"></td> </tr>
+    <td><img src="https://github.com/suraj-khot-19/UserAuth_Node/blob/main/output/3.png" alt="vid"></td> </tr>
+    <td><img src="https://github.com/suraj-khot-19/UserAuth_Node/blob/main/output/4.png" alt="vid"></td> 
   </tr>
 </table>
 ---

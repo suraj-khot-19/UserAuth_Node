@@ -1,0 +1,42 @@
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
+
+import dotenv from "dotenv";
+dotenv.config();
+
+const userMiddleware = async (req, res, next) => {
+	try {
+		// get token from request
+		const token = req.cookies.jwt;
+
+		// if no token
+		if (!token) {
+			return res.status(401).json({ msg: "Token required!" });
+		}
+
+		// verify
+		const verify = jwt.verify(token, process.env.JWT_CODE);
+
+		if (!verify) {
+			return res.status(401).json({ msg: "invalid token" });
+		}
+
+		// if verified
+		const user = await User.findById(verify.userID).select("-password"); //select user but not password
+
+		if (!user) {
+			return res.status(401).json({ msg: "user not found" });
+		}
+
+		// if user found send to req
+		req.user = user;
+
+		// if everything ok
+		next();
+	} catch (error) {
+		console.log("error in middleware, ", error.message);
+		res.status(500).json({ error: error.message });
+	}
+};
+
+export default userMiddleware;

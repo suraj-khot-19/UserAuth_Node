@@ -1,32 +1,27 @@
-import express from 'express'
-import cookieParser from 'cookie-parser'
-
-import ConnectToMongo from './db/db.js'
-
-import signup from './routers/signup.router.js'
-import login from './routers/login.router.js'
-import logout from './routers/logout.router.js'
-import me from './routers/user.router.js'
-
-///dev
-import dotenv from 'dotenv';
+import express from "express";
+import cookieParser from "cookie-parser";
+import connectDB from "./db/db.js";
+import dotenv from "dotenv";
+import userRoutes from "./routes/userRoutes.js";
+import cors from "cors";
 
 dotenv.config();
-
 const app = express();
+const PORT = process.env.PORT || 8080;
 
+// middlewares
 app.use(express.json());
-
-const port = process.env.PORT || 3000
-
-app.listen(port, () => {
-    console.log("server running on port", port)
-    ConnectToMongo()
-})
-
+app.use(cors());
 app.use(cookieParser());
 
-app.use('/api/user', signup)
-app.use('/api/user', login)
-app.use('/api/user', logout)
-app.use('/api/user', me)
+// health check route
+app.get("/", (req, res) => res.json({ message: "API running ✅" }));
+
+// user routes
+app.use("/auth", userRoutes);
+
+// connect to database and start server
+connectDB();
+app.listen(PORT, () =>
+	console.log(`Server started at: http://localhost:${PORT}`)
+);

@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { loginUser } from "../services/authServices";
+import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 	const [form, setForm] = useState({
 		email: "",
 		password: "",
 	});
-
+	const { setUser } = useAuth();
+	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
-	const [msg, setMsg] = useState("");
 
 	const handleChange = (e) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,14 +19,14 @@ const Login = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setMsg("");
 		setLoading(true);
 		try {
 			const res = await loginUser(form);
-			setMsg(res.msg || "Login successful");
-			setForm({ email: "", password: "" });
+			setUser(res.user);
+			toast.success(res.msg || "Login successful");
+			navigate("/dashboard");
 		} catch (error) {
-			setMsg(error.response?.data?.msg || "Login failed");
+			toast.error(error.response?.data?.msg || "Login failed");
 		} finally {
 			setLoading(false);
 		}
@@ -38,8 +41,6 @@ const Login = () => {
 				<h2 className="text-2xl font-semibold mb-6 text-center text-indigo-600">
 					Login
 				</h2>
-
-				{msg && <p className="text-sm text-center mb-4 text-red-500">{msg}</p>}
 
 				<input
 					type="email"

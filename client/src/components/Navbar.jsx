@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { logoutUser } from "../services/authServices";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
 	const { user, setUser, loading } = useAuth();
@@ -10,9 +11,11 @@ const Navbar = () => {
 		try {
 			await logoutUser();
 			setUser(null);
+			toast.success("Logged out successfully");
 			navigate("/login");
 		} catch (err) {
 			console.error("Logout failed:", err);
+			toast.error("Logout failed");
 		}
 	};
 

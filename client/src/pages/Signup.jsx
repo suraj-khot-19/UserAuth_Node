@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { signupUser } from "../services/authServices";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
 	const [form, setForm] = useState({
@@ -10,7 +12,7 @@ const Signup = () => {
 	});
 
 	const [loading, setLoading] = useState(false);
-	const [msg, setMsg] = useState("");
+	const navigate = useNavigate();
 
 	const handleChange = (e) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,14 +20,13 @@ const Signup = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setMsg("");
 		setLoading(true);
 		try {
 			const res = await signupUser(form);
-			setMsg(res.msg || "Signup successful");
-			setForm({ name: "", email: "", age: "", password: "" });
+			toast.success(res.msg || "Signup successful");
+			navigate("/login");
 		} catch (error) {
-			setMsg(error.response?.data?.msg || "Something went wrong");
+			toast.error(error.response?.data?.msg || "Signup failed");
 		} finally {
 			setLoading(false);
 		}
@@ -38,15 +39,13 @@ const Signup = () => {
 				className="w-full max-w-md p-6 bg-white shadow-md rounded"
 			>
 				<h2 className="text-2xl font-semibold mb-6 text-center text-indigo-600">
-					Sign Up
+					Signup
 				</h2>
-
-				{msg && <p className="text-sm text-center mb-4 text-red-500">{msg}</p>}
 
 				<input
 					type="text"
 					name="name"
-					placeholder="Full Name"
+					placeholder="Name"
 					value={form.name}
 					onChange={handleChange}
 					className="w-full mb-4 px-4 py-2 border rounded"
@@ -76,7 +75,7 @@ const Signup = () => {
 					placeholder="Password"
 					value={form.password}
 					onChange={handleChange}
-					className="w-full mb-4 px-4 py-2 border rounded"
+					className="w-full mb-6 px-4 py-2 border rounded"
 					required
 				/>
 
@@ -85,7 +84,7 @@ const Signup = () => {
 					disabled={loading}
 					className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
 				>
-					{loading ? "Signing up..." : "Sign Up"}
+					{loading ? "Creating Account..." : "Signup"}
 				</button>
 			</form>
 		</div>

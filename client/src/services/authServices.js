@@ -7,6 +7,7 @@ import api from "./api";
 export const signupUser = async (data) => {
 	try {
 		const response = await api.post("/signup", data);
+		console.log(response)
 		return response.data;
 	} catch (error) {
 		console.error("Signup failed:", error.response?.data || error.message);
